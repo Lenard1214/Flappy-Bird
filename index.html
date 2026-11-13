@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>gameszko</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header class="py-4">
+        <h1 class="text-center">Flappy Bird</h1>
+    </header>
+    <main>
+        <div class="container d-flex"></div>
+        <div class="row justify-content-center g-3">
+            <div class="col-md-9 col-lg-8 order-md-2 order-lg-1">
+                <div class="jatekter">
+                    <div class="hud">
+                        <span class="elet">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </span>
+                        <span class="badge pont">+0</span>
+                    </div>
+                    <div class="akadalyok"></div>
+                    <i class="bi bi-emoji-smile-fill madar"></i>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-8 order-md-1 order-lg-2 align-self-md-center">
+                <div class="d-grid gap-2 d-lg-flex justify-content-lg-evenly">
+                    <button type="button" class="btn btn-primary kezdes">Játék kezdése</button>
+                    <button type="button" class="btn btn-danger befejezes" disabled>Játék befejezése</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
     
 </body>
 </html>

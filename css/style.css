@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    background-color: rgb(238, 242, 248);
+    font-family: "Lato", sans-serif;
+}
+
+main {
+    padding-bottom: 36px;
+}
+
+
+
+
+
+
+
+.jatekter {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid rgb(28, 58, 128);
+    border-radius: 24px;
+    background: linear-gradient(rgb(135, 206, 235), rgb(224, 242, 250));
+}
+
+.hud {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.elet i {
+    margin-right: 2px;
+    font-size: 20px;
+    color: #f5b301;
+}
+
+.pont {
+    font-size: 16px;
+    background-color: rgb(28, 58, 128);
+}
+
+.akadalyok {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.akadaly {
+    position: absolute;
+    background-color: rgb(60, 60, 70);
+}
+
+.akadaly.fent {
+    top: 0;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.akadaly.lent {
+    bottom: 0;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.madar {
+    position: absolute;
+    line-height: 1;
+    color: #f5b301;
+}
+
+footer {
+    padding: 16px 10px;
+    text-align: center;
+}
