@@ -11,26 +11,6 @@ main {
     padding-bottom: 36px;
 }
 
-.navbar {
-    background: linear-gradient(90deg,
-            rgb(36, 65, 133) 0%,
-            rgb(88, 42, 158) 100%);
-}
-
-.gomb,
-.gomb:hover {
-    color: #fff;
-}
-
-.gomb {
-    background-color: rgb(70, 112, 175);
-    border: none;
-}
-
-.gomb:hover {
-    background-color: rgb(49, 78, 122);
-}
-
 .jatekter {
     position: relative;
     width: 100%;
@@ -38,6 +18,7 @@ main {
     overflow: hidden;
     cursor: pointer;
     user-select: none;
+    touch-action: manipulation;
     border: 2px solid rgb(28, 58, 128);
     border-radius: 24px;
     background: linear-gradient(rgb(135, 206, 235), rgb(224, 242, 250));
@@ -59,7 +40,7 @@ main {
 .elet i {
     margin-right: 2px;
     font-size: 20px;
-    color: #f5b301;
+    color: #e63946;
 }
 
 .pont {
@@ -77,14 +58,23 @@ main {
 
 .akadaly {
     position: absolute;
-    background-color: rgb(60, 60, 70);
+    background: url("../img/haromszog.png") center / 100% 100% no-repeat;
+}
+
+.akadaly.lent {
+    bottom: 0;
+}
+
+.akadaly.fent {
+    top: 0;
 }
 
 .madar {
     position: absolute;
+    z-index: 1;
     line-height: 1;
     color: #f5b301;
-    background-image: url(//img/9d63676d959ceb7fc33cb1b73cc2780f.jpg);
+    transform: translate(-50%, -50%);
 }
 
 footer {

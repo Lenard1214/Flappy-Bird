@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        gameszko</title>
+    <title>gameszko</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
 
@@ -16,42 +14,60 @@
     </header>
 
     <main>
-        <div class="container d-flex"></div>
-        <div class="row justify-content-center g-3">
-            <div class="col-md-9 col-lg-8 order-md-2 order-lg-1">
-                <div class="jatekter">
-                    <div class="hud">
-                        <span class="elet">
-                            <i class="bi bi-heart-fill"></i>
-                            <i class="bi bi-heart-fill"></i>
-                            <i class="bi bi-heart-fill"></i>
-                        </span>
-                        <span class="badge pont">+0</span>
+        <div class="container">
+            <div class="row justify-content-center g-3">
+                <div class="col-md-9 col-lg-8 order-md-2 order-lg-1">
+                    <div class="jatekter">
+                        <div class="hud">
+                            <span class="elet">
+                                <i class="bi bi-heart-fill"></i>
+                                <i class="bi bi-heart-fill"></i>
+                                <i class="bi bi-heart-fill"></i>
+                            </span>
+                            <span class="badge pont">+0</span>
+                        </div>
+                        <div class="akadalyok"></div>
+                        <i class="bi bi-emoji-smile-fill madar"></i>
                     </div>
-                    <div class="akadalyok"></div>
-                    <i class="bi bi-emoji-fill madar"></i>
                 </div>
-            </div>
 
-            <div class="col-md-3 col-lg-8 order-md-1 order-lg-2 align-self-md-center">
-                <div class="d-grid gap-2 d-lg-flex justify-content-lg">
-                    <button type="button" class="btn btn-primary kezdes">Játék kezdése</button>
-                    <button type="button" class="btn btn-danger befejezes" disabled>Játék befejezése</button>
+                <div class="col-md-3 col-lg-4 order-md-1 order-lg-2 align-self-md-center">
+                    <div class="d-grid gap-2 d-lg-flex justify-content-lg-center">
+                        <button type="button" class="btn btn-primary kezdes">Játék kezdése</button>
+                        <button type="button" class="btn btn-danger befejezes" disabled>Játék befejezése</button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <div class="modal fade" id="vesztesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5">Játék vége</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezár"></button>
+                </div>
+                <div class="modal-body">
+                    Pontszámod: <strong class="vegePont">0</strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Bezár</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="text-center">
         <div>&copy;FlappyBird Gameszko</div>
         Minden jog fenntartva!
-
     </footer>
+
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/Madar.js"></script>
     <script src="js/Akadaly.js"></script>
+    <script src="js/JatekKezeles.js"></script>
     <script src="js/script.js"></script>
 
-</body> 
-
+</body>
 </html>

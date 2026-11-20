@@ -1,15 +1,15 @@
 var jatek = new JatekKezeles();
 var ido = null;
-var vesztesModal = new bootstrap.Modal("#vesztesModal");
+var vesztesModal = new bootstrap.Modal(document.getElementById("vesztesModal"));
 
 function hudKiir() {
-    var csillagok = document.querySelectorAll(".elet i");
+    var szivek = document.querySelectorAll(".elet i");
 
-    for (var i = 0; i < csillagok.length; i++) {
+    for (var i = 0; i < szivek.length; i++) {
         if (i < jatek.getElet()) {
-            csillagok[i].className = "bi bi-star-fill";
+            szivek[i].className = "bi bi-heart-fill";
         } else {
-            csillagok[i].className = "bi bi-star";
+            szivek[i].className = "bi bi-heart";
         }
     }
 
@@ -96,7 +96,9 @@ document.querySelector(".kezdes").addEventListener("click", indit);
 document.querySelector(".befejezes").addEventListener("click", befejez);
 
 document.querySelector(".jatekter").addEventListener("pointerdown", () => {
-    jatek.ugrik();
+    if (jatek.getFut()) {
+        jatek.ugrik();
+    }
 });
 
 document.addEventListener("keydown", (e) => {
@@ -108,4 +110,5 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("resize", kirajzol);
 
+gombokBeallit();
 kirajzol();
