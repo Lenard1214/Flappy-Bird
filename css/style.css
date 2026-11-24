@@ -67,6 +67,7 @@ main {
 
 .akadaly.fent {
     top: 0;
+    transform: rotate(180deg);
 }
 
 .madar {
