@@ -32,7 +32,6 @@ main {
     opacity: 0.85;
 }
 
-/* ---------- Játéktér ---------- */
 .keret {
     padding: 8px;
     border-radius: 28px;
@@ -118,8 +117,6 @@ main {
     z-index: 2;
     display: block;
     height: auto;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
-    transform: translate(-50%, -50%);
     pointer-events: none;
 }
 
@@ -169,8 +166,9 @@ main {
 }
 
 .rekord {
-    background: linear-gradient(rgb(255, 253, 224), rgb(250, 242, 178));
+    background: radial-gradient(circle,rgba(147, 185, 237, 1) 13%, rgba(206, 176, 245, 1) 93%);
     border-color: rgba(160, 130, 20, 0.35);
+    border: 3px solid rgba(6, 33, 97, 0.15);
 }
 
 .rekord-tabla {
@@ -179,7 +177,7 @@ main {
 
 .rekord-tabla th,
 .rekord-tabla td {
-    border-color: rgba(160, 130, 20, 0.25);
+    border-color: rgba(29, 28, 25, 0.25);
 }
 
 .rekord-tabla tr.aktiv td {
