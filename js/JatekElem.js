@@ -121,7 +121,9 @@ class JatekElem {
         return this.#tipus === "akadaly";
     }
 
-    // ---- madár ----
+
+
+
 
     ugrik() {
         if (!this.isMadar()) return;
@@ -137,6 +139,7 @@ class JatekElem {
     }
 
 
+    
     
 
     halad(sebesseg) {

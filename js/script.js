@@ -41,7 +41,7 @@ function kirajzol() {
         var akadaly = akadalyok[i];
         var irany = akadaly.getFent() ? "fent" : "lent";
 
-        html += `<div class="akadaly ${irany}" style="left: ${akadaly.getX() * arany}px; width: ${akadaly.getSzelesseg() * arany}px; height: ${akadaly.getMagassag() * arany}px;"></div>`;
+       html += `<div class="akadaly ${irany}" style="left: ${akadaly.getX() * arany}px; width: ${akadaly.getSzelesseg() * arany}px; height: ${akadaly.getMagassag() * arany}px;"></div>`;
     }
 
     document.querySelector(".akadalyok").innerHTML = html;
@@ -63,9 +63,33 @@ function leallit() {
 }
 
 function vegeMutat() {
-    document.querySelector(".vegePont").textContent = jatek.getPont();
-    document.querySelector(".vegeIdo").textContent = idozito.toString();
+    var ujRekord = {
+        pont: jatek.getPont(),
+        ido: idozito.toString()
+    };
+
+    var regiRekord = localStorage.getItem("flappyBirdEredmeny");
+
+    if (regiRekord === null || ujRekord.pont > JSON.parse(regiRekord).pont) {
+        localStorage.setItem("flappyBirdEredmeny", JSON.stringify(ujRekord));
+    }
+
+    document.querySelector(".vegePont").textContent = ujRekord.pont;
+    document.querySelector(".vegeIdo").textContent = ujRekord.ido;
+
+    rekordKiir();
     vesztesModal.show();
+}
+
+function rekordKiir() {
+    var rekord = localStorage.getItem("flappyBirdEredmeny");
+
+    if (rekord !== null) {
+        rekord = JSON.parse(rekord);
+
+        document.querySelector(".rekordPont").textContent = rekord.pont;
+        document.querySelector(".rekordIdo").textContent = rekord.ido;
+    }
 }
 
 function lep() {
@@ -115,7 +139,10 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+
+
 window.addEventListener("resize", kirajzol);
 
 gombokBeallit();
 kirajzol();
+rekordKiir();
