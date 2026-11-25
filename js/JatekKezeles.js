@@ -52,7 +52,7 @@ class JatekKezeles {
     }
 
     ujJatek() {
-        this.#madar = new Madar(this.#magassag / 2, 100);
+        this.#madar = JatekElem.ujMadar(this.#magassag / 2, 100);
         this.#akadalyok = [];
         this.#elet = 3;
         this.#pont = 0;
@@ -94,7 +94,7 @@ class JatekKezeles {
         this.#szamlalo++;
         if (this.#szamlalo % 100 === 0) {
             var magassag = 200 + Math.random() * 220;
-            this.#akadalyok.push(new Akadaly(this.#szelesseg, 150, magassag, Math.random() < 0.5));
+            this.#akadalyok.push(JatekElem.ujAkadaly(this.#szelesseg, 150, magassag, Math.random() < 0.5));
         }
 
         if (madar.getY() < fel) {

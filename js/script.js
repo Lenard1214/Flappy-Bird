@@ -1,4 +1,5 @@
 var jatek = new JatekKezeles();
+var idozito = new Idozito();
 var ido = null;
 var vesztesModal = new bootstrap.Modal(document.getElementById("vesztesModal"));
 
@@ -14,6 +15,7 @@ function hudKiir() {
     }
 
     document.querySelector(".pont").textContent = "+" + jatek.getPont();
+    document.querySelector(".ido").textContent = idozito.toString();
 }
 
 function kirajzol() {
@@ -55,11 +57,14 @@ function leallit() {
     clearInterval(ido);
     ido = null;
     jatek.leallit();
+    idozito.leallit();
     gombokBeallit();
+    hudKiir();
 }
 
 function vegeMutat() {
     document.querySelector(".vegePont").textContent = jatek.getPont();
+    document.querySelector(".vegeIdo").textContent = idozito.toString();
     vesztesModal.show();
 }
 
@@ -79,6 +84,8 @@ function indit() {
     jatek.ujJatek();
     jatek.inditas();
     jatek.ugrik();
+    idozito.nullaz();
+    idozito.inditas();
     ido = setInterval(lep, 20);
 
     gombokBeallit();

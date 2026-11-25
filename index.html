@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <header class="py-4">
@@ -24,7 +26,14 @@
                                 <i class="bi bi-heart-fill"></i>
                                 <i class="bi bi-heart-fill"></i>
                             </span>
-                            <span class="badge pont">+0</span>
+                            <span class="badge" title="Pontszám">
+                                <i class="bi bi-trophy-fill"></i>
+                                <span class="pont">+0</span>
+                            </span>
+                            <span class="badge" title="Játékidő">
+                                <i class="bi bi-stopwatch-fill"></i>
+                                <span class="ido">00:00.0</span>
+                            </span>
                         </div>
                         <div class="akadalyok"></div>
                         <i class="bi bi-emoji-smile-fill madar"></i>
@@ -33,11 +42,31 @@
 
                 <div class="col-md-3 col-lg-4 order-md-1 order-lg-2 align-self-md-center">
                     <div class="d-grid gap-2 d-lg-flex justify-content-lg-center">
-                        <button type="button" class="btn btn-primary kezdes">Játék kezdése</button>
-                        <button type="button" class="btn btn-danger befejezes" disabled>Játék befejezése</button>
+
+                        <aside class="small">
+                            <p class="fw-bold mb-2">Játékszabályok:</p>
+                            <ul class="ps-3 mb-0">
+                                <p></p>
+                                <li>Cél: maradj életben minél tovább, és kerülj ki minél több tüskét.</li>
+                                <li>Irányítás: kattints vagy koppints a játéktérre, esetleg nyomj Szóközt vagy Fel nyilat, hogy a madár felugorjon. Különben folyamatosan esik.</li>
+                                <li>A tüskék jobbról érkeznek, alulról vagy felülről. Ha hozzájuk érsz, elveszítesz egy életet.</li>
+                                <li>3 életed van. A talaj érintése is egy életbe kerül, és a madár visszapattan. A plafon nem sebez, csak megállítja a madarat.</li>
+                                <li>Sérülés után a madár villog, ilyenkor rövid ideig nem veszíthetsz újabb életet.</li>
+                                <li>Minden sikeresen elhagyott tüske +1 pont.</li>
+                                <li>Az időmérő a játék indításakor indul, és a játék végén áll meg.</li>
+                                <li>A játék véget ér, ha elfogy mindhárom életed, vagy a „Játék befejezése” gombra kattintasz.</li>
+                                <p></p>
+                            </ul>
+                        </aside>
                     </div>
                 </div>
             </div>
+            <div class="d-grid gap-2 d-lg-flex justify-content-lg-center">
+                <button type="button" class="btn btn-primary kezdes">Játék kezdése</button>
+                <button type="button" class="btn btn-danger befejezes" disabled>Játék befejezése</button>
+            </div>
+
+
         </div>
     </main>
 
@@ -49,7 +78,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezár"></button>
                 </div>
                 <div class="modal-body">
-                    Pontszámod: <strong class="vegePont">0</strong>
+                    Pontszámod: <strong class="vegePont">0</strong><br>
+                    Játékidőd: <strong class="vegeIdo">00:00.0</strong>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Bezár</button>
@@ -64,10 +94,12 @@
     </footer>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/Madar.js"></script>
-    <script src="js/akadaly.js"></script>
+    <script src="js/JatekElem.js"></script>
+    <script src="js/Idozito.js"></script>
     <script src="js/JatekKezeles.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/teszt.js"></script>
 
 </body>
+
 </html>

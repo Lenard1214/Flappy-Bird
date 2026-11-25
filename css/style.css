@@ -31,6 +31,7 @@ main {
     z-index: 2;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     padding: 4px 10px;
     border-radius: 8px;
@@ -43,9 +44,14 @@ main {
     color: #e63946;
 }
 
-.pont {
+.hud .badge {
     font-size: 16px;
+    white-space: nowrap;
     background-color: rgb(28, 58, 128);
+}
+
+.ido {
+    font-variant-numeric: tabular-nums;
 }
 
 .akadalyok {
@@ -81,4 +87,9 @@ main {
 footer {
     padding: 16px 10px;
     text-align: center;
+}
+ul{
+    border: 3px solid rgb(28, 58, 128);
+    border-radius: 5px;
+    background: linear-gradient(rgb(189, 233, 245), rgb(135, 207, 238));
 }
