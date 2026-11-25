@@ -1,8 +1,3 @@
-
-
-
-
-
 var tIdoMost = 0;
 var tIdozito = new Idozito(() => tIdoMost);
 
@@ -88,5 +83,12 @@ var tRegi = { pont: 5, ido: "00:30.0" };
 console.assert(rekordFrissit(null, tRegi) === tRegi, "Hiba a rekordFrissit() függvényben, mert nincs rekord, de nem az új kerül be.");
 console.assert(rekordFrissit(tRegi, { pont: 6, ido: "00:40.0" }).pont == 6, "Hiba a rekordFrissit() függvényben, mert a jobb pontszám nem lesz rekord.");
 console.assert(rekordFrissit(tRegi, { pont: 2, ido: "01:00.0" }) === tRegi, "Hiba a rekordFrissit() függvényben, mert a rosszabb pontszám felülírja a rekordot.");
+
+var tKonnyu = ujJatek("konnyu");
+var tKozepes = ujJatek("kozepes");
+var tNehez = ujJatek("nehez");
+console.assert(tKozepes.sebesseg > tKonnyu.sebesseg, "Hiba az ujJatek() függvényben, mert a közepes nem gyorsabb a könnyűnél.");
+console.assert(tNehez.sebesseg > tKozepes.sebesseg && tNehez.gyakorisag < tKonnyu.gyakorisag, "Hiba az ujJatek() függvényben, mert a nehéz nem gyorsabb vagy nem sűrűbb.");
+console.assert(tNehez.elet == 2 && tNehez.maxElet == 2, "Hiba az ujJatek() függvényben, mert a nehéz szint nem 2 élettel indul.");
 
 console.log("Tesztek lefutottak.");

@@ -1,14 +1,43 @@
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,700;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
-
 body {
     margin: 0;
-    background-color: rgb(238, 242, 248);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(rgb(226, 238, 252), rgb(246, 249, 253) 420px);
     font-family: "Lato", sans-serif;
+    color: #1d2a4a;
 }
 
 main {
-    padding-bottom: 36px;
+    flex: 1;
+    padding: 28px 0 40px;
+}
+
+.fejlec {
+    padding: 28px 12px 24px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(135deg, rgb(16, 36, 88), rgb(28, 58, 128) 60%, rgb(52, 108, 196));
+    box-shadow: 0 4px 16px rgba(16, 36, 88, 0.3);
+}
+
+.fejlec h1 {
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.fejlec p {
+    margin: 6px 0 0;
+    opacity: 0.85;
+}
+
+/* ---------- Játéktér ---------- */
+.keret {
+    padding: 8px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, rgb(28, 58, 128), rgb(16, 36, 88));
+    box-shadow: 0 10px 28px rgba(16, 36, 88, 0.35);
 }
 
 .jatekter {
@@ -17,97 +46,150 @@ main {
     aspect-ratio: 16 / 9;
     overflow: hidden;
     cursor: pointer;
-    user-select: none;
-    touch-action: manipulation;
-    border: 2px solid rgb(28, 58, 128);
-    border-radius: 24px;
-    background: linear-gradient(rgb(135, 206, 235), rgb(224, 242, 250));
+    border-radius: 20px;
+    background: linear-gradient(rgb(110, 190, 240), rgb(200, 232, 250));
+}
+
+.jatekter.ejszaka {
+    background: #32316d url("../img/ejszaka.jpg") center / cover no-repeat;
+}
+
+.mezo {
+    position: absolute;
+    inset: 0;
+    background: url("../img/mezo.png") center bottom / 100% 100% no-repeat;
+}
+
+.jatekter.ejszaka .felhok,
+.jatekter.ejszaka .mezo {
+    display: none;
 }
 
 .hud {
     position: absolute;
-    top: 10px;
-    left: 12px;
-    z-index: 2;
+    top: 14px;
+    left: 14px;
+    z-index: 3;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    padding: 4px 10px;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 12px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .elet i {
-    margin-right: 2px;
+    margin-right: 3px;
     font-size: 20px;
     color: #e63946;
 }
 
 .hud .badge {
-    font-size: 16px;
+    font-size: 15px;
     white-space: nowrap;
     background-color: rgb(28, 58, 128);
 }
 
-.ido {
-    font-variant-numeric: tabular-nums;
-}
-
 .akadalyok {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
 }
 
 .akadaly {
     position: absolute;
-    background: url("../img/haromszog2.png") center / 100% 100% no-repeat;
 }
 
 .akadaly.lent {
     bottom: 0;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    background: linear-gradient(to top, rgb(168, 16, 40), rgb(255, 84, 96));
 }
 
 .akadaly.fent {
     top: 0;
-    transform: rotate(180deg);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background: linear-gradient(to bottom, rgb(168, 16, 40), rgb(255, 84, 96));
 }
 
 .madar {
     position: absolute;
-    z-index: 1;
-    line-height: 1;
-    color: #f5b301;
+    z-index: 2;
+    display: block;
+    height: auto;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
     transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.logo {
+    height: 1.5em;
+    width: auto;
+    vertical-align: -0.1em;
+}
+
+.takaro {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    background: rgba(16, 36, 88, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.takaro.rejtett {
+    display: none;
+}
+
+.kartya {
+    margin-bottom: 18px;
+    padding: 16px 18px;
+    border: 1px solid rgba(28, 58, 128, 0.15);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(28, 58, 128, 0.1);
+}
+
+.kartya h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(28, 58, 128);
+}
+
+.nehezseg-leiras {
+    margin-top: 10px;
+    color: #4a5776;
+}
+
+.rekord {
+    background: linear-gradient(rgb(255, 253, 224), rgb(250, 242, 178));
+    border-color: rgba(160, 130, 20, 0.35);
+}
+
+.rekord-tabla {
+    --bs-table-bg: transparent;
+}
+
+.rekord-tabla th,
+.rekord-tabla td {
+    border-color: rgba(160, 130, 20, 0.25);
+}
+
+.rekord-tabla tr.aktiv td {
+    font-weight: 700;
 }
 
 footer {
-    padding: 16px 10px;
+    padding: 18px 10px;
     text-align: center;
-}
-ul{
-    border: 3px solid rgb(28, 58, 128);
-    border-radius: 5px;
-    background: linear-gradient(rgb(189, 233, 245), rgb(135, 207, 238));
-}
-.rekord {
-    margin-top: 10px;
-    padding: 15px;
-    border: 2px solid rgb(28, 58, 128);
-    border-radius: 2px;
-    background: linear-gradient(rgb(254, 255, 168), rgb(185, 204, 77));
-}
-
-.rekord h3 {
-    color: rgb(28, 58, 128);
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.rekord p {
-    margin-bottom: 0;
-    font-size: 17px;
+    font-size: 14px;
+    color: #fff;
+    background: rgb(16, 36, 88);
 }
