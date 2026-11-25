@@ -1,6 +1,3 @@
-
-
-
 var NEHEZSEGEK = {
     konnyu:  { nev: "Könnyű",  sebesseg: 5,  elet: 3, gyakorisag: 100, magMin: 200, magMax: 420, tema: "nappal",  leiras: "Napközben, lassú tempó, 3 élet." },
     kozepes: { nev: "Közepes", sebesseg: 7,  elet: 3, gyakorisag: 100, magMin: 200, magMax: 420, tema: "nappal",  leiras: "Napközben, gyorsabb madár, 3 élet." },
@@ -121,11 +118,8 @@ function rekordFrissit(regi, uj) {
     return regi;
 }
 
-
-/* ---------- Rekordok tárolása (hibatűrő localStorage) ---------- */
-
 var TAROLO_KULCS = "flappyBirdRekordok";
-var memoriaRekordok = {};   // tartalék, ha a localStorage nem elérhető
+var memoriaRekordok = {}; 
 
 function rekordokOlvas() {
     try {
@@ -145,7 +139,6 @@ function rekordokOlvas() {
         }
         memoriaRekordok = tiszta;
     } catch (hiba) {
-        // tiltott / hibás tárhely: marad a memóriában tárolt érték
     }
     return memoriaRekordok;
 }
@@ -155,13 +148,9 @@ function rekordokMent(rekordok) {
     try {
         localStorage.setItem(TAROLO_KULCS, JSON.stringify(rekordok));
     } catch (hiba) {
-        // nem sikerült menteni, de a játék tovább működik
+
     }
 }
-
-
-/* ---------- Megjelenítés és vezérlés ---------- */
-
 var jatek = ujJatek();
 var idozito = new Idozito();
 var ido = null;
