@@ -16,7 +16,7 @@ main {
 .fejlec {
     padding: 28px 12px 24px;
     text-align: center;
-    color: #fff;
+    color: #ffffff;
     background: linear-gradient(135deg, rgb(16, 36, 88), rgb(28, 58, 128) 60%, rgb(52, 108, 196));
     box-shadow: 0 4px 16px rgba(16, 36, 88, 0.3);
 }
@@ -135,7 +135,7 @@ main {
     justify-content: center;
     padding: 20px;
     text-align: center;
-    color: #fff;
+    color: #ffffff;
     background: rgba(16, 36, 88, 0.55);
     backdrop-filter: blur(2px);
 }
@@ -149,7 +149,7 @@ main {
     padding: 16px 18px;
     border: 1px solid rgba(28, 58, 128, 0.15);
     border-radius: 16px;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 4px 14px rgba(28, 58, 128, 0.1);
 }
 
@@ -188,6 +188,6 @@ footer {
     padding: 18px 10px;
     text-align: center;
     font-size: 14px;
-    color: #fff;
+    color: #ffffff;
     background: rgb(16, 36, 88);
 }
