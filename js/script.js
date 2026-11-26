@@ -4,220 +4,147 @@ var NEHEZSEGEK = {
     nehez:   { nev: "Nehéz",   sebesseg: 10, elet: 2, gyakorisag: 48,  magMin: 240, magMax: 480, tema: "ejszaka", leiras: "Éjszaka, nagyon gyors madár, sok és magasabb tüske, csak 2 élet." }
 };
 
-function ujJatek(nehezseg = "konnyu") {
-    var beallitas = NEHEZSEGEK[nehezseg] || NEHEZSEGEK.konnyu;
+var SZELESSEG = 1600;
+var MAGASSAG = 900;
+var MADAR_X = 300;
 
-    return {
-        szelesseg: 1600,
-        magassag: 900,
-        madar: JatekElem.ujMadar(450, 100),
-        madarX: 300,
-        akadalyok: [],
-        nehezseg: nehezseg,
-        maxElet: beallitas.elet,
-        elet: beallitas.elet,
-        gyakorisag: beallitas.gyakorisag,
-        magMin: beallitas.magMin,
-        magMax: beallitas.magMax,
-        tema: beallitas.tema,
-        pont: 0,
-        sertetlen: 0,
-        szamlalo: 0,
-        sebesseg: beallitas.sebesseg,
-        fut: false
-    };
-}
-
-
-function sebzes(jatek) {
-    jatek.elet--;
-    jatek.sertetlen = 60;
-
-    if (jatek.elet <= 0) {
-        jatek.elet = 0;
-        jatek.fut = false;
-    }
-}
-
-
-function akadalyHozzaad(jatek, veletlen) {
-    var magassag = jatek.magMin + veletlen() * (jatek.magMax - jatek.magMin);
-    var fent = veletlen() < 0.5;
-
-    jatek.akadalyok.push(JatekElem.ujAkadaly(jatek.szelesseg, 150, magassag, fent));
-}
-
-
-function szelekEllenoriz(jatek) {
-    var madar = jatek.madar;
-    var fel = madar.getMeret() / 2;
-
-    if (madar.getY() < fel) {
-        madar.setY(fel);
-        madar.setSebesseg(0);
-    } else if (madar.getY() > jatek.magassag - fel) {
-        madar.setY(jatek.magassag - fel);
-        madar.ugrik();
-
-        if (jatek.sertetlen === 0) {
-            sebzes(jatek);
-        }
-    }
-}
-
-
-function akadalyokKezel(jatek) {
-    var madar = jatek.madar;
-    var fel = madar.getMeret() / 2;
-
-    for (var i = jatek.akadalyok.length - 1; i >= 0; i--) {
-        var akadaly = jatek.akadalyok[i];
-        akadaly.halad(jatek.sebesseg);
-
-        var utkozott = akadaly.utkozik(jatek.madarX, madar.getY(), madar.getMeret() * 0.4, jatek.magassag);
-        if (jatek.fut && jatek.sertetlen === 0 && utkozott) {
-            sebzes(jatek);
-        }
-
-        var elhagyta = akadaly.getX() + akadaly.getSzelesseg() < jatek.madarX - fel;
-        if (!akadaly.getAtment() && elhagyta) {
-            akadaly.setAtment(true);
-            jatek.pont++;
-        }
-
-        if (akadaly.getX() + akadaly.getSzelesseg() < 0) {
-            jatek.akadalyok.splice(i, 1);
-        }
-    }
-}
-
-
-function jatekLep(jatek, veletlen = Math.random) {
-    if (!jatek.fut) return;
-
-    jatek.madar.esik();
-    jatek.szamlalo++;
-
-    if (jatek.szamlalo % jatek.gyakorisag === 0) {
-        akadalyHozzaad(jatek, veletlen);
-    }
-
-    szelekEllenoriz(jatek);
-    akadalyokKezel(jatek);
-
-    if (jatek.sertetlen > 0) {
-        jatek.sertetlen--;
-    }
-}
-
-
-function rekordFrissit(regi, uj) {
-    if (regi === null || uj.pont > regi.pont) {
-        return uj;
-    }
-    return regi;
-}
-
-var TAROLO_KULCS = "flappyBirdRekordok";
-var memoriaRekordok = {}; 
-
-function rekordokOlvas() {
-    try {
-        var szoveg = localStorage.getItem(TAROLO_KULCS);
-        var adat = szoveg ? JSON.parse(szoveg) : {};
-
-        if (adat === null || typeof adat !== "object" || Array.isArray(adat)) {
-            return memoriaRekordok;
-        }
-
-        var tiszta = {};
-        for (var kulcs in NEHEZSEGEK) {
-            var r = adat[kulcs];
-            if (r && typeof r.pont === "number" && typeof r.ido === "string") {
-                tiszta[kulcs] = { pont: r.pont, ido: r.ido };
-            }
-        }
-        memoriaRekordok = tiszta;
-    } catch (hiba) {
-    }
-    return memoriaRekordok;
-}
-
-function rekordokMent(rekordok) {
-    memoriaRekordok = rekordok;
-    try {
-        localStorage.setItem(TAROLO_KULCS, JSON.stringify(rekordok));
-    } catch (hiba) {
-
-    }
-}
-var jatek = ujJatek();
+var gameInterval = null;
 var idozito = new Idozito();
-var ido = null;
 var vesztesModal = new bootstrap.Modal(document.getElementById("vesztesModal"));
+
+var jatekter = document.querySelector(".jatekter");
+var madarElem = document.querySelector(".madar");
+var akadalyokElem = document.querySelector(".akadalyok");
+var eletElem = document.querySelector(".elet");
+var pontElem = document.querySelector(".pont");
+var idoElem = document.querySelector(".ido");
+var kezdesBtn = document.querySelector(".kezdes");
+var befejezesBtn = document.querySelector(".befejezes");
+var radioGombok = document.querySelectorAll("input[name=nehezseg]");
+
+var nehezseg;
+var beallitas;
+var madar;
+var akadalyok;
+var elet;
+var pont;
+var sertetlen;
+var szamlalo;
 
 function kivalasztottNehezseg() {
     return document.querySelector("input[name=nehezseg]:checked").value;
 }
 
-function hudKiir() {
-    var szivek = "";
-    for (var i = 0; i < jatek.maxElet; i++) {
-        szivek += '<i class="bi ' + (i < jatek.elet ? "bi-heart-fill" : "bi-heart") + '"></i>';
-    }
-    document.querySelector(".elet").innerHTML = szivek;
+function ujJatek() {
+    nehezseg = kivalasztottNehezseg();
+    beallitas = NEHEZSEGEK[nehezseg];
+    madar = JatekElem.ujMadar(450, 100);
+    akadalyok = [];
+    elet = beallitas.elet;
+    pont = 0;
+    sertetlen = 0;
+    szamlalo = 0;
+}
 
-    document.querySelector(".pont").textContent = "+" + jatek.pont;
-    document.querySelector(".ido").textContent = idozito.toString();
+function sebzes() {
+    elet--;
+    sertetlen = 60;
+}
+
+function jatekLep() {
+    var fel = madar.getMeret() / 2;
+
+    madar.esik();
+    szamlalo++;
+
+    if (szamlalo % beallitas.gyakorisag == 0) {
+        var magassag = beallitas.magMin + Math.random() * (beallitas.magMax - beallitas.magMin);
+        var fent = Math.random() < 0.5;
+        akadalyok.push(JatekElem.ujAkadaly(SZELESSEG, 150, magassag, fent));
+    }
+
+    if (madar.getY() < fel) {
+        madar.setY(fel);
+        madar.setSebesseg(0);
+    } else if (madar.getY() > MAGASSAG - fel) {
+        madar.setY(MAGASSAG - fel);
+        madar.ugrik();
+        if (sertetlen == 0) {
+            sebzes();
+        }
+    }
+
+    for (var i = akadalyok.length - 1; i >= 0; i--) {
+        var akadaly = akadalyok[i];
+        akadaly.halad(beallitas.sebesseg);
+
+        if (sertetlen == 0 && akadaly.utkozik(MADAR_X, madar.getY(), madar.getMeret() * 0.4, MAGASSAG)) {
+            sebzes();
+        }
+
+        if (!akadaly.getAtment() && akadaly.getX() + akadaly.getSzelesseg() < MADAR_X - fel) {
+            akadaly.setAtment(true);
+            pont++;
+        }
+
+        if (akadaly.getX() + akadaly.getSzelesseg() < 0) {
+            akadalyok.splice(i, 1);
+        }
+    }
+
+    if (sertetlen > 0) {
+        sertetlen--;
+    }
 }
 
 function kirajzol() {
-    var arany = document.querySelector(".jatekter").clientWidth / jatek.szelesseg;
-    var madar = document.querySelector(".madar");
+    var arany = jatekter.clientWidth / SZELESSEG;
 
-    madar.style.left = jatek.madarX * arany + "px";
-    madar.style.top = jatek.madar.getY() * arany + "px";
-    madar.style.width = jatek.madar.getMeret() * arany + "px";
-    madar.style.opacity = jatek.sertetlen % 10 < 5 ? 1 : 0.4;
+    madarElem.style.left = MADAR_X * arany + "px";
+    madarElem.style.top = madar.getY() * arany + "px";
+    madarElem.style.width = madar.getMeret() * arany + "px";
+    madarElem.style.opacity = sertetlen % 10 < 5 ? 1 : 0.4;
 
-    var dolles = Math.max(-25, Math.min(40, jatek.madar.getSebesseg() * 2));
-    madar.style.transform = "translate(-50%, -50%) rotate(" + dolles + "deg)";
+    var dolles = Math.max(-25, Math.min(40, madar.getSebesseg() * 2));
+    madarElem.style.transform = "translate(-50%, -50%) rotate(" + dolles + "deg)";
 
-    document.querySelector(".jatekter").classList.toggle("ejszaka", jatek.tema === "ejszaka");
+    jatekter.classList.toggle("ejszaka", beallitas.tema == "ejszaka");
 
     var html = "";
-    for (var akadaly of jatek.akadalyok) {
-        var irany = akadaly.getFent() ? "fent" : "lent";
-        html += `<div class="akadaly ${irany}" style="left: ${akadaly.getX() * arany}px; width: ${akadaly.getSzelesseg() * arany}px; height: ${akadaly.getMagassag() * arany}px;"></div>`;
+    for (var i = 0; i < akadalyok.length; i++) {
+        var a = akadalyok[i];
+        var irany = a.getFent() ? "fent" : "lent";
+        html += `<div class="akadaly ${irany}" style="left: ${a.getX() * arany}px; width: ${a.getSzelesseg() * arany}px; height: ${a.getMagassag() * arany}px;"></div>`;
     }
-    document.querySelector(".akadalyok").innerHTML = html;
+    akadalyokElem.innerHTML = html;
 
-    hudKiir();
+    var szivek = "";
+    for (var j = 0; j < beallitas.elet; j++) {
+        szivek += '<i class="bi ' + (j < elet ? "bi-heart-fill" : "bi-heart") + '"></i>';
+    }
+    eletElem.innerHTML = szivek;
+
+    pontElem.textContent = "+" + pont;
+    idoElem.textContent = idozito.toString();
 }
 
 function gombokBeallit() {
-    var fut = ido !== null;
+    var fut = gameInterval != null;
 
-    document.querySelector(".kezdes").disabled = fut;
-    document.querySelector(".befejezes").disabled = !fut;
-
-    for (var r of document.querySelectorAll("input[name=nehezseg]")) {
-        r.disabled = fut;
+    kezdesBtn.disabled = fut;
+    befejezesBtn.disabled = !fut;
+    for (var i = 0; i < radioGombok.length; i++) {
+        radioGombok[i].disabled = fut;
     }
-
     document.querySelector(".takaro").classList.toggle("rejtett", fut);
 }
 
-function nehezsegFrissit() {
-    var nehezseg = kivalasztottNehezseg();
-
-    document.querySelector(".nehezseg-leiras").textContent = NEHEZSEGEK[nehezseg].leiras;
-
-    if (ido === null) {
-        jatek = ujJatek(nehezseg);
-        kirajzol();
+function rekordokOlvas() {
+    var szoveg = localStorage.getItem("flappyBirdRekordok");
+    if (szoveg == null) {
+        return {};
     }
-    rekordKiir();
+    return JSON.parse(szoveg);
 }
 
 function rekordKiir() {
@@ -227,96 +154,94 @@ function rekordKiir() {
 
     for (var kulcs in NEHEZSEGEK) {
         var r = rekordok[kulcs];
-        html += '<tr class="' + (kulcs === aktiv ? "aktiv" : "") + '"><td>' + NEHEZSEGEK[kulcs].nev + "</td><td>" +
-            (r ? r.pont : "–") + "</td><td>" + (r ? r.ido : "–") + "</td></tr>";
+        var pontSzoveg = r ? r.pont : "–";
+        var idoSzoveg = r ? r.ido : "–";
+        html += '<tr class="' + (kulcs == aktiv ? "aktiv" : "") + '"><td>' + NEHEZSEGEK[kulcs].nev + "</td><td>" + pontSzoveg + "</td><td>" + idoSzoveg + "</td></tr>";
     }
     document.querySelector(".rekord-tabla tbody").innerHTML = html;
 }
 
-function leallit() {
-    clearInterval(ido);
-    ido = null;
-    jatek.fut = false;
-    idozito.leallit();
-    gombokBeallit();
-    hudKiir();
+function nehezsegValtas() {
+    document.querySelector(".nehezseg-leiras").textContent = NEHEZSEGEK[kivalasztottNehezseg()].leiras;
+
+    if (gameInterval == null) {
+        ujJatek();
+        kirajzol();
+    }
+    rekordKiir();
 }
 
-function vegeMutat() {
-    var uj = { pont: jatek.pont, ido: idozito.toString() };
+function start() {
+    if (gameInterval != null) return;
+
+    document.activeElement.blur();
+
+    ujJatek();
+    madar.ugrik();
+    idozito.nullaz();
+    idozito.inditas();
+
+    gameInterval = setInterval(() => {
+        jatekLep();
+        kirajzol();
+
+        if (elet <= 0) {
+            stop();
+        }
+    }, 20);
+
+    gombokBeallit();
+    kirajzol();
+}
+
+function stop() {
+    if (gameInterval == null) return;
+
+    clearInterval(gameInterval);
+    gameInterval = null;
+    idozito.leallit();
+    gombokBeallit();
+    kirajzol();
+
+    var ido = idozito.toString();
     var rekordok = rekordokOlvas();
-    var regi = rekordok[jatek.nehezseg] || null;
-    var frissitett = rekordFrissit(regi, uj);
-    var ujRekord = frissitett === uj && uj.pont > 0;
+    var regi = rekordok[nehezseg];
+    var ujRekord = regi == undefined || pont > regi.pont;
 
-    rekordok[jatek.nehezseg] = frissitett;
-    rekordokMent(rekordok);
-
-    document.querySelector(".vegeSzint").textContent = "Nehézség: " + NEHEZSEGEK[jatek.nehezseg].nev;
-    document.querySelector(".vegePont").textContent = uj.pont;
-    document.querySelector(".vegeIdo").textContent = uj.ido;
-    document.querySelector(".ujRekord").hidden = !ujRekord;
-
+    if (ujRekord) {
+        rekordok[nehezseg] = { pont: pont, ido: ido };
+        localStorage.setItem("flappyBirdRekordok", JSON.stringify(rekordok));
+    }
     rekordKiir();
+
+    document.querySelector(".vegeSzint").textContent = "Nehézség: " + beallitas.nev;
+    document.querySelector(".vegePont").textContent = pont;
+    document.querySelector(".vegeIdo").textContent = ido;
+    document.querySelector(".ujRekord").hidden = !(ujRekord && pont > 0);
     vesztesModal.show();
 }
 
-function lep() {
-    jatekLep(jatek);
-    kirajzol();
-
-    if (!jatek.fut) {
-        leallit();
-        vegeMutat();
-    }
-}
-
-function indit() {
-    if (ido !== null) return;
-
-    if (document.activeElement) document.activeElement.blur();
-
-    jatek = ujJatek(kivalasztottNehezseg());
-    jatek.fut = true;
-    jatek.madar.ugrik();
-    idozito.nullaz();
-    idozito.inditas();
-    ido = setInterval(lep, 20);
-
-    gombokBeallit();
-    kirajzol();
-}
-
-function befejez() {
-    if (ido === null) return;
-
-    leallit();
-    vegeMutat();
-}
-
 function ugras() {
-    if (jatek.fut) {
-        jatek.madar.ugrik();
+    if (gameInterval != null) {
+        madar.ugrik();
     }
 }
 
-document.querySelector(".kezdes").addEventListener("click", indit);
-document.querySelector(".befejezes").addEventListener("click", befejez);
-document.querySelector(".jatekter").addEventListener("pointerdown", ugras);
+kezdesBtn.addEventListener("click", start);
+befejezesBtn.addEventListener("click", stop);
+jatekter.addEventListener("pointerdown", ugras);
 window.addEventListener("resize", kirajzol);
 
-for (var radio of document.querySelectorAll("input[name=nehezseg]")) {
-    radio.addEventListener("change", nehezsegFrissit);
+for (var i = 0; i < radioGombok.length; i++) {
+    radioGombok[i].addEventListener("change", nehezsegValtas);
 }
 
 document.addEventListener("keydown", (e) => {
-    if (e.code === "Space" || e.code === "ArrowUp") {
-        if (ido !== null) {
-            e.preventDefault();
-            ugras();
-        }
+    if ((e.code == "Space" || e.code == "ArrowUp") && gameInterval != null) {
+        e.preventDefault();
+        ugras();
     }
 });
 
 gombokBeallit();
-nehezsegFrissit();
+nehezsegValtas();
